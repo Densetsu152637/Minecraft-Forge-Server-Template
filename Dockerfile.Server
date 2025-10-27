@@ -1,0 +1,38 @@
+# Use a Java 17 runtime (Forge 1.20+)
+FROM eclipse-temurin:17-jdk
+
+# Set working directory
+WORKDIR /server
+
+# Build arguments (can be overridden via docker-compose.yml)
+ARG MC_VERSION=1.20.1
+ARG FORGE_VERSION=47.1.0
+
+# Environment variables for runtime reference
+ENV MC_VERSION=${MC_VERSION}
+ENV FORGE_VERSION=${FORGE_VERSION}
+
+# Install dependencies and download Forge installer dynamically
+RUN apt-get update && apt-get install -y curl && \
+    curl -o forge-installer.jar \
+    https://maven.minecraftforge.net/net/minecraftforge/forge/${MC_VERSION}-${FORGE_VERSION}/forge-${MC_VERSION}-${FORGE_VERSION}-installer.jar && \
+    java -jar forge-installer.jar --installServer && \
+    rm forge-installer.jar && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Accept EULA
+RUN echo "eula=true" > eula.txt
+
+# Copy mods and configs (optional)
+COPY mods ./mods
+COPY config ./config
+
+# Expose Minecraft port
+EXPOSE 25565
+
+# Automatically detect and run the Forge server jar
+# This finds the first forge*.jar (e.g. forge-1.20.1-47.1.0.jar)
+# Enables runtime memory config (default 4GB but can be overridden in docker-compose)
+ENV MEMORY=4G
+CMD ["bash", "-c", "java -Xmx${MEMORY} -Xms${MEMORY} -jar $(ls forge-*-universal.jar 2>/dev/null || ls forge-*.jar | head -n 1) nogui"]
+

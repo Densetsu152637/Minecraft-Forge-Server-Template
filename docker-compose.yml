@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  forge:
+    build:
+      context: .
+      dockerfile: Dockerfile.Server
+    args:
+      MC_VERSION: 1.20.1
+      FORGE_VERSION: 47.1.0
+
+    container_name: forge-server
+    ports:
+      - "25565:25565"
+    volumes:
+      - ./data:/server # Persistent world data
+      - ./mods:/server/mods # Mount mods folder
+      - ./config:/server/config # Mount configs folder
+    environment:
+      TZ: "UTC"
+      MEMORY: 4G
+    restart: unless-stopped
+    stop_grace_period: 120s # Can take up to 2 minutes to shut down (safely)

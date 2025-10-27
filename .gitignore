@@ -1,0 +1,62 @@
+# === Minecraft Server Data ===
+data/*
+!data/README.md
+!data/server.properties   
+!data/whitelist.json
+!data/banned-players.json
+!data/banned-ips.json
+!data/ops.json
+
+# === Forge and Mod Files ===
+mods/*
+!mods/README.md           
+
+config/*
+!config/README.md
+
+# === Generated Files ===
+forge-*-installer.jar
+forge-*-installer.log
+libraries/
+run/
+logs/
+crash-reports/
+usercache.json
+
+# === Docker Related ===
+# Ignore local data volumes, build artifacts
+*.pid
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Docker build context outputs
+**/__pycache__/
+**/.DS_Store
+**/Thumbs.db
+
+# Docker artifacts
+*.tar
+*.img
+*.container
+*.lock
+
+# === Node/npm (if you add scripts later) ===
+node_modules/
+npm-debug.log
+
+# === IDE / OS Files ===
+.vscode/
+.idea/
+*.iml
+.DS_Store
+
+# === Backups / Archives ===
+*.zip
+*.tar.gz
+*.rar
+*.7z
+backup/
+backups/
