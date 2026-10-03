@@ -2,13 +2,11 @@ agents.md
 agents.*.md
 
 # === Minecraft Server Data ===
+.env
+.env.*
+!.env.example
 data/*
 !data/README.md
-!data/server.properties   
-!data/whitelist.json
-!data/banned-players.json
-!data/banned-ips.json
-!data/ops.json
 
 # === Forge and Mod Files ===
 mods/*

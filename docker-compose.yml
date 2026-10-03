@@ -1,23 +1,25 @@
-version: "3.8"
+name: ${COMPOSE_PROJECT_NAME:-minecraft-forge-server}
 
 services:
   forge:
-    build:
-      context: .
-      dockerfile: Dockerfile.Server
-    args:
-      MC_VERSION: 1.20.1
-      FORGE_VERSION: 47.1.0
-
-    container_name: forge-server
+    image: itzg/minecraft-server:java${JAVA_VERSION:?Set JAVA_VERSION in .env}
     ports:
-      - "25565:25565"
+      - "${SERVER_PORT:-25565}:25565"
     volumes:
-      - ./data:/server # Persistent world data
-      - ./mods:/server/mods # Mount mods folder
-      - ./config:/server/config # Mount configs folder
+      - ./data:/data
     environment:
-      TZ: "UTC"
-      MEMORY: 4G
+      EULA: "${EULA:-false}"
+      TYPE: FORGE
+      VERSION: "${MC_VERSION:?Set MC_VERSION to the server pack Minecraft version}"
+      FORGE_VERSION: "${FORGE_VERSION:?Set FORGE_VERSION to the server pack Forge version}"
+      MEMORY: "${MEMORY:-4G}"
+      TZ: "${TZ:-UTC}"
+      OVERRIDE_SERVER_PROPERTIES: "false"
     restart: unless-stopped
-    stop_grace_period: 120s # Can take up to 2 minutes to shut down (safely)
+    stop_grace_period: 120s
+    healthcheck:
+      test: ["CMD", "mc-health"]
+      interval: 30s
+      timeout: 10s
+      start_period: 5m
+      retries: 5
