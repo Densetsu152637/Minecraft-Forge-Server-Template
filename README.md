@@ -4,6 +4,8 @@ Run a downloaded CurseForge **Forge server pack** using Docker and Bash. Docker 
 
 ## Quickstart
 
+The startup workflow is **extract the server pack → configure `.env` → run `bash start.sh`**. This template uses a prebuilt Docker image, so there is no `docker compose build` step. The Bash launcher validates your setup and runs `docker compose up -d forge` with this repository's configuration; Docker downloads the image automatically when needed.
+
 1. Install Docker with the modern Compose plugin. On Windows, install/start Docker Desktop with Linux containers and use **Git Bash**, or use WSL with Docker Desktop's WSL integration enabled. You do not need Java on the host.
 2. Download the pack author's **server pack** from CurseForge. A client pack/export containing `manifest.json` and `overrides/` is not a ready server pack. Confirm that the pack uses Forge, and note its Minecraft, Forge, and Java versions.
 3. Extract **all contents** of the server pack into `data/`. If the ZIP contains an outer folder, move that folder's contents into `data/`; `mods/` must be directly inside `data/`. Keep `config/`, `defaultconfigs/`, `kubejs/`, `scripts/`, and other supplied files alongside it. Do not place mods in the repository's old root `mods/` folder.
