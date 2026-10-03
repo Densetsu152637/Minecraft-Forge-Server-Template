@@ -1,0 +1,5 @@
+# Only the runtime image inputs belong in the build context.
+**
+!Dockerfile.Server
+!scripts/
+!scripts/start-server.sh

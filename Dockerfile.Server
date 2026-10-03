@@ -1,0 +1,13 @@
+ARG JAVA_VERSION=17
+FROM eclipse-temurin:${JAVA_VERSION}-jdk-jammy
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends bash ca-certificates curl wget unzip tini tzdata \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY scripts/start-server.sh /usr/local/bin/start-server
+RUN chmod +x /usr/local/bin/start-server
+
+WORKDIR /data
+STOPSIGNAL SIGINT
+ENTRYPOINT ["/usr/bin/tini", "-g", "--", "/usr/local/bin/start-server"]
