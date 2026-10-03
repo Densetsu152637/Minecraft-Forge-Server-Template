@@ -1,3 +1,6 @@
+agents.md
+agents.*.md
+
 # === Minecraft Server Data ===
 data/*
 !data/README.md
